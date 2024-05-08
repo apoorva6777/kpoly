@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-app-svc
+  namespace: app
+  labels:
+    app: djangoapp
+spec:
+  type: ClusterIP
+  selector:
+    app: djangoapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000

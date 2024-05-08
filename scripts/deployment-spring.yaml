@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: springapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: springapp
+    spec:
+      imagePullSecrets:
+      - name: ocirsecret
+      containers:
+      - name: app
+        image: iad.ocir.io/idmaqhrbiuyo/springtest:v0.1
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          httpGet:
+            path: /api/status
+            port: 8081
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 2
+        resources:
+          limits:
+            cpu: "256m"
+            memory: 512Mi
+          requests:
+            cpu: "256m"
+            memory: "512Mi"

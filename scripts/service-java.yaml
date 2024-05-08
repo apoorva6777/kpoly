@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-app-svc
+  namespace: app
+  labels:
+    app: springapp
+spec:
+  type: ClusterIP
+  selector:
+    app: springapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8081

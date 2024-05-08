@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-app
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: nestapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nestapp
+    spec:
+      imagePullSecrets:
+      - name: ocirsecret
+      containers:
+      - name: app
+        image: iad.ocir.io/idmaqhrbiuyo/nodetest:v0.1
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /api/test
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 2   
+        resources:
+          limits:
+            cpu: "256m" 
+            memory: 512Mi
+          requests:
+            cpu: "256m"
+            memory: "512Mi"
